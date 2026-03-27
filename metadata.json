@@ -1,0 +1,5 @@
+{
+  "name": "Smart Pregnancy Care",
+  "description": "A multilingual, offline-friendly safety and support app for rural pregnant women.",
+  "requestFramePermissions": ["geolocation"]
+}
