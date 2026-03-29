@@ -102,6 +102,16 @@ export const Registration: React.FC = () => {
         >
           {t('save')}
         </button>
+
+        <div className="text-center mt-3 text-sm text-gray-500">
+          {t('already_registered')} 
+          <button
+            onClick={() => navigate('/login')}
+            className="text-pink-600 font-semibold underline"
+          >
+            {t('login')}
+          </button>
+        </div>
       </div>
     </div>
   );

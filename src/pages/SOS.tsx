@@ -13,15 +13,43 @@ export const SOS: React.FC = () => {
 
   const handleSOS = () => {
     setStatus('sending');
-    // Simulate sending SMS with location
-    setTimeout(() => {
-      setStatus('calling');
-      // In a real mobile app, we'd use a plugin. Here we use tel: links
-      const contacts = [user?.husbandContact, ...(user?.emergencyContacts || [])].filter(Boolean);
-      if (contacts.length > 0) {
-        window.location.href = `tel:${contacts[0]}`;
+
+    const contacts = [user?.husbandContact, ...(user?.emergencyContacts || [])].filter(Boolean);
+    const targetNumber = contacts.length > 0 ? contacts[0] : '911';
+
+    const buildMessage = (lat?: number, lon?: number) => {
+      const base = `Emergency request from ${user?.name || 'user'}. Need help immediately.`;
+      if (lat != null && lon != null) {
+        const mapLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+        return encodeURIComponent(`${base} Live location: ${mapLink}`);
       }
-    }, 2000);
+      return encodeURIComponent(`${base} Location not available.`);
+    };
+
+    const startSOS = (lat?: number, lon?: number) => {
+      setStatus('calling');
+      const message = buildMessage(lat, lon);
+      const whatsappUrl = `https://wa.me/${targetNumber.replace(/[^0-9]/g, '')}?text=${message}`;
+
+      window.open(whatsappUrl, '_blank');
+      setTimeout(() => {
+        window.location.href = `tel:${targetNumber}`;
+      }, 2200);
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => startSOS(pos.coords.latitude, pos.coords.longitude),
+        () => {
+          setStatus('sending');
+          startSOS();
+        },
+        { timeout: 10000 },
+      );
+    } else {
+      setStatus('sending');
+      startSOS();
+    }
   };
 
   return (
@@ -40,15 +68,16 @@ export const SOS: React.FC = () => {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={handleSOS}
-          className="w-64 h-64 bg-red-600 rounded-full shadow-2xl flex items-center justify-center border-8 border-white group"
+          className="w-64 h-64 bg-red-600 rounded-full shadow-2xl flex flex-col items-center justify-center border-8 border-white group text-center"
         >
           <Phone size={80} className="text-white group-active:animate-bounce" />
+          <span className="text-white font-bold mt-2">{t('sos_button')}</span>
         </motion.button>
 
         <div className="h-20 flex flex-col items-center justify-center">
           {status === 'sending' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-red-600 font-bold">
-              <MapPin className="animate-bounce" /> {t('sending_sms')}
+              <MapPin className="animate-bounce" /> {t('whatsapp_sos')}
             </motion.div>
           )}
           {status === 'calling' && (

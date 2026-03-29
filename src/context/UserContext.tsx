@@ -4,6 +4,7 @@ import { UserData } from '../types';
 interface UserContextType {
   user: UserData | null;
   registerUser: (data: UserData) => void;
+  logout: () => void;
   isRegistered: boolean;
 }
 
@@ -20,10 +21,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('user_data', JSON.stringify(data));
   };
 
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('user_data');
+  };
+
   const isRegistered = !!user;
 
   return (
-    <UserContext.Provider value={{ user, registerUser, isRegistered }}>
+    <UserContext.Provider value={{ user, registerUser, logout, isRegistered }}>
       {children}
     </UserContext.Provider>
   );

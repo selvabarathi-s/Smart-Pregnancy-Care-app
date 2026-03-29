@@ -40,6 +40,18 @@ export const careTips: ContentItem[] = [
   {
     title: { en: 'Healthy Diet', ta: 'ஆரோக்கியமான உணவு' },
     description: { en: 'Eat plenty of green vegetables and fruits', ta: 'ஏராளமான பச்சை காய்கறிகள் மற்றும் பழங்களை உண்ணுங்கள்' }
+  },
+  {
+    title: { en: 'Pregnancy Week Tracking', ta: 'கர்ப்ப வார கண்காணிப்பு' },
+    description: { en: 'Review weekly guidance on growth, meals, and symptoms.', ta: 'வளர்ச்சி, உணவு மற்றும் அறிகுறிகள் குறித்து வாரந்தோறும் வழிகாட்டலை மறுஅறியவும்.' },
+    icon: 'calendar',
+    category: 'tracking'
+  },
+  {
+    title: { en: 'Danger Signs Decision', ta: 'ஆபத்தான அறிகுறிகள் தீர்மானம்' },
+    description: { en: 'If you experience severe pain, bleeding, or dizziness, rest, monitor, and seek hospital care.', ta: 'கடுமையான வலி, இரத்தப்போக்கு அல்லது மயக்கம் ஏற்படுமானால், ஓய்வு எடுக்கவும், கண்காணிக்கவும், மருத்துவமனைக்கு செல்லவும்.' },
+    icon: 'alert',
+    category: 'danger'
   }
 ];
 
